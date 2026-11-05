@@ -30,3 +30,11 @@ Thumbs.db
 # IDEs
 .vscode/
 .cmd.txt
+
+# Terraform working files; commit .terraform.lock.hcl
+.terraform/
+*.tfstate
+*.tfstate.*
+tfplan
+# Per-machine Terraform settings, such as a personal Cognito name
+*.tfvars
