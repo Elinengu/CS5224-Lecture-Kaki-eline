@@ -8,24 +8,41 @@ GitHub Actions uses OIDC instead of stored AWS keys. On each run GitHub issues a
 
 The role trusts only:
 
-- jobs running on `main` of one repository, `YangQF2002/CS5224-Lecture-Kaki` by default (the automatic plan);
+- jobs running on `main` of one repository, the team's by default (the automatic plan);
 - jobs in the repository's `dev` environment (the approved apply).
+
+GitHub names the repository by owner and repository ID as well as name (its "immutable subject"), for example `repo:YangQF2002@123465999/CS5224-Lecture-Kaki@1411985002`, so a deleted and recreated repository with the same name cannot inherit the trust.
 
 It has `PowerUserAccess` plus IAM limited to roles and instance profiles named `lecture-kaki-terraform-dev-*`, and cannot change itself. It can still modify non-IAM resources anywhere in the account, so only this workflow should use it.
 
 ## 1. AWS admin
 
-Run in bash from the repository root, signed in as the admin. The state bucket from [step 2 of the deployment guide](terraform-deployment.md#2-state-bucket-once-per-account) must exist.
+Run in bash from the repository root, signed in as the admin. `lecture-kaki` is only the name of the saved login on your machine, as in the [deployment guide](terraform-deployment.md#1-sign-in); any name works if you use the same one throughout. The state bucket from [step 2 of the deployment guide](terraform-deployment.md#2-state-bucket-once-per-account) must exist.
 
 ```bash
-aws login --profile <admin-profile> --region ap-southeast-1
-export AWS_PROFILE=<admin-profile>
+aws login --profile lecture-kaki --region ap-southeast-1
+export AWS_PROFILE=lecture-kaki
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 terraform -chdir=infra/terraform/github init -backend-config="bucket=lecturekaki-tfstate-$ACCOUNT_ID"
 terraform -chdir=infra/terraform/github plan
 ```
 
-For a fork, add `-var github_repository=<owner>/<repo>` to `plan` and `apply`.
+If your terminal does not keep `export`ed values between commands, put the profile in front of each command instead, and type the bucket name in full:
+
+```bash
+AWS_PROFILE=lecture-kaki terraform -chdir=infra/terraform/github init -backend-config="bucket=lecturekaki-tfstate-ACCOUNT_NUMBER"
+```
+
+Replace `ACCOUNT_NUMBER` with the 12-digit account number that `aws sts get-caller-identity` prints.
+
+For a fork or any other repository, replace `OWNER/REPO` below with its name, print its subject prefix, and save it in a Git-ignored settings file before `plan`:
+
+```bash
+gh api repos/OWNER/REPO/actions/oidc/customization/sub --jq .sub_claim_prefix
+echo 'github_subject_prefix = "PRINTED_VALUE"' > infra/terraform/github/terraform.tfvars
+```
+
+The plan's role trust rule should then show that value followed by `:ref:refs/heads/main` and `:environment:dev`. If the role already exists, the plan changes only its trust rule.
 
 The plan should add 4 resources: the GitHub OIDC provider, the deploy role and its two permission attachments. If the account already trusts GitHub, `apply` fails with `EntityAlreadyExists` for the provider; rerun with `-var create_github_oidc_provider=false` (plan then adds 3).
 
@@ -43,17 +60,27 @@ In the repository's **Settings**:
 1. **Environments → New environment**, named `dev`. Under **Deployment protection rules**, tick **Required reviewers** and add who may approve deployments. Under **Deployment branches and tags**, choose **Selected branches and tags** and add `main`.
 2. **Secrets and variables → Actions → Variables → New repository variable**, once for each:
 
-   | Name                    | Value                                                                                                        |
-   | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
-   | `AWS_DEPLOY_ROLE_ARN`   | The role ARN from step 1                                                                                     |
-   | `TF_STATE_BUCKET`       | `lecturekaki-tfstate-<account>`; the team's is `lecturekaki-tfstate-320465872576`                            |
-   | `COGNITO_DOMAIN_PREFIX` | The sign-in page name; the team's is `lecture-kaki-terraform-dev`, other accounts need their own unique name |
+   | Name                    | Value                                                                                                                                                                                                                                                                                        |
+   | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `AWS_DEPLOY_ROLE_ARN`   | The role ARN from step 1                                                                                                                                                                                                                                                                     |
+   | `TF_STATE_BUCKET`       | `lecturekaki-tfstate-ACCOUNT_NUMBER`; the team's is `lecturekaki-tfstate-320465872576`                                                                                                                                                                                                       |
+   | `COGNITO_DOMAIN_PREFIX` | Name of the Cognito sign-in page, the part before `.auth` in `https://lecture-kaki-terraform-dev.auth.ap-southeast-1.amazoncognito.com`. The team's is `lecture-kaki-terraform-dev`; another account uses its own unique name, the same as `cognito_domain_prefix` in its `terraform.tfvars` |
+
+   Or set them with the GitHub CLI. These are the team repository's values; the first command reads the role ARN from step 1 directly:
+
+   ```bash
+   gh variable set AWS_DEPLOY_ROLE_ARN -R YangQF2002/CS5224-Lecture-Kaki --body "$(AWS_PROFILE=lecture-kaki terraform -chdir=infra/terraform/github output -raw deploy_role_arn)"
+   gh variable set TF_STATE_BUCKET -R YangQF2002/CS5224-Lecture-Kaki --body "lecturekaki-tfstate-320465872576"
+   gh variable set COGNITO_DOMAIN_PREFIX -R YangQF2002/CS5224-Lecture-Kaki --body "lecture-kaki-terraform-dev"
+   ```
+
+   For a fork in another account, change `-R` to the fork, the account number in the bucket name, and the sign-in page name.
 
 ## Running it
 
 - **Every push to `main`** (including merged pull requests) runs **Plan**. The plan appears in the run's summary.
 - **Apply and deploy frontend** then waits. A required reviewer opens the run, reads the plan and selects **Review deployments → Approve**. The job applies exactly that plan, waits for the API's `/health`, then builds and uploads the frontend.
-- **Manual run:** Actions → **Terraform deploy** → **Run workflow** on `main`. Tick **Publish lecture data** for a first deployment or to refresh lectures. Runs from other branches are refused by AWS.
+- **Manual run:** Actions → **Terraform deploy** → **Run workflow** on `main`. Tick the lecture data option to refresh lectures; a deployment with no lecture data yet publishes it automatically. Runs from other branches are refused by AWS.
 - An approval that comes after another change to the environment fails with a stale-plan error; run the workflow again.
 
 ## Notes
