@@ -1,0 +1,535 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>LectureKaki Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: one reading column, a sticky part switcher, wide figures scroll sideways on phones. */
+:root {
+  --bg: #f4f6f8; --surface: #ffffff; --fg: #18212c; --muted: #5b6676; --rule: #d8dee6;
+  --accent: #0e6b78; --accent-ink: #ffffff; --line: #6f7b8b;
+  --edge-f: #e3ecfb; --edge-s: #3f69c0; --fn-f: #fdeedb; --fn-s: #c4741a; --fn2-f: #fff8ef;
+  --data-f: #e2f3e8; --data-s: #2c8a4f; --auth-f: #f2e5f7; --auth-s: #8746a2;
+  --ext-f: #eceff3; --ext-s: #6a7482; --user-f: #ffffff; --user-s: #18212c; --ops-f: #fbe8e9; --ops-s: #b5414a;
+  --tip-bg: #e6f2f3; --warn-bg: #fdf3e3; --code-bg: #eef1f5;
+  --display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161d; --surface: #18202a; --fg: #e4e9ef; --muted: #9aa6b5; --rule: #2a3542;
+  --accent: #4fb8c4; --accent-ink: #0b1218; --line: #8b97a8;
+  --edge-f: #1b2a44; --edge-s: #7ea3ea; --fn-f: #3a2a17; --fn-s: #f0a24b; --fn2-f: #2b2116;
+  --data-f: #173322; --data-s: #5fcf8a; --auth-f: #2f1f3a; --auth-s: #c48ae0;
+  --ext-f: #232a33; --ext-s: #a3adba; --user-f: #18202a; --user-s: #e4e9ef; --ops-f: #3a1d21; --ops-s: #f07c85;
+  --tip-bg: #15303a; --warn-bg: #352a17; --code-bg: #1f2833; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #11161d; --surface: #18202a; --fg: #e4e9ef; --muted: #9aa6b5; --rule: #2a3542;
+  --accent: #4fb8c4; --accent-ink: #0b1218; --line: #8b97a8;
+  --edge-f: #1b2a44; --edge-s: #7ea3ea; --fn-f: #3a2a17; --fn-s: #f0a24b; --fn2-f: #2b2116;
+  --data-f: #173322; --data-s: #5fcf8a; --auth-f: #2f1f3a; --auth-s: #c48ae0;
+  --ext-f: #232a33; --ext-s: #a3adba; --user-f: #18202a; --user-s: #e4e9ef; --ops-f: #3a1d21; --ops-s: #f07c85;
+  --tip-bg: #15303a; --warn-bg: #352a17; --code-bg: #1f2833; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15.5px/1.62 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { padding-block: 40px 20px; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 5vw, 44px)/1.08 var(--display); margin: 10px 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font: 600 clamp(23px, 3.4vw, 30px)/1.15 var(--display); margin: 0 0 6px; text-wrap: balance; }
+h3 { font: 600 18px/1.3 var(--display); margin: 26px 0 8px; }
+p, li { max-width: 72ch; }
+.lede { color: var(--muted); font-size: 17px; max-width: 68ch; margin: 0; }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+nav.parts { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--rule); }
+nav.parts .wrap { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: thin; }
+nav.parts a { flex: none; text-decoration: none; color: var(--fg); font: 500 13px/1 var(--body); padding: 8px 12px; border: 1px solid var(--rule); border-radius: 999px; background: var(--bg); }
+nav.parts a:hover { border-color: var(--accent); color: var(--accent); }
+nav.parts a b { font-family: var(--mono); color: var(--accent); margin-right: 5px; font-weight: 500; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 18px; font-size: 13px; color: var(--muted); }
+.lg { display: inline-flex; align-items: center; gap: 7px; }
+.sw { width: 16px; height: 12px; border-radius: 3px; border: 1.5px solid; display: inline-block; }
+
+section.part { padding-block: 44px 8px; border-top: 1px solid var(--rule); scroll-margin-top: 64px; }
+.partno { font: 500 13px/1 var(--mono); color: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
+.oneliner { font-size: 16.5px; color: var(--muted); margin: 4px 0 18px; }
+
+.fig { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 12px; margin: 18px 0 6px; }
+.fig svg { display: block; width: 100%; height: auto; }
+.figcap { font-size: 13px; color: var(--muted); margin: 0 0 18px; }
+.teamfig { background: #ffffff; }
+.teamfig img { display: block; width: 100%; min-width: 760px; height: auto; }
+
+/* SVG styling */
+.b { stroke-width: 1.6; }
+.c { stroke-width: 1.6; stroke-dasharray: 6 4; }
+.k-user { fill: var(--user-f); stroke: var(--user-s); border-color: var(--user-s); background: var(--user-f); }
+.k-edge { fill: var(--edge-f); stroke: var(--edge-s); border-color: var(--edge-s); background: var(--edge-f); }
+.k-fn { fill: var(--fn-f); stroke: var(--fn-s); border-color: var(--fn-s); background: var(--fn-f); }
+.k-fn2 { fill: var(--fn2-f); stroke: var(--fn-s); }
+.k-data { fill: var(--data-f); stroke: var(--data-s); border-color: var(--data-s); background: var(--data-f); }
+.k-auth { fill: var(--auth-f); stroke: var(--auth-s); border-color: var(--auth-s); background: var(--auth-f); }
+.k-ext { fill: var(--ext-f); stroke: var(--ext-s); border-color: var(--ext-s); background: var(--ext-f); }
+.k-ops { fill: var(--ops-f); stroke: var(--ops-s); border-color: var(--ops-s); background: var(--ops-f); }
+.bt { fill: var(--fg); font: 600 13.5px var(--body); text-anchor: middle; }
+.bs { fill: var(--muted); font: 400 11.5px var(--body); text-anchor: middle; }
+.ct { fill: var(--fn-s); font: 600 12.5px var(--mono); }
+.note { fill: var(--muted); font: 400 11.5px var(--body); text-anchor: middle; }
+.note.mono { font-family: var(--mono); fill: var(--fg); }
+.a { fill: none; stroke: var(--line); stroke-width: 1.6; }
+.a.dash { stroke-dasharray: 5 4; }
+.ah { fill: var(--line); }
+.bdg { fill: var(--accent); }
+.bdt { fill: var(--accent-ink); font: 600 11px var(--mono); text-anchor: middle; }
+.lbg { fill: var(--surface); stroke: var(--rule); }
+.lt, .mt { fill: var(--fg); font: 500 11.5px var(--body); }
+.life { stroke: var(--rule); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.sep { stroke: var(--rule); stroke-width: 1; }
+.sept { fill: var(--accent); font: 600 12px var(--mono); text-anchor: middle; paint-order: stroke; stroke: var(--surface); stroke-width: 8px; }
+
+/* Steps */
+.steps { display: grid; gap: 10px; margin: 8px 0 10px; padding: 0; list-style: none; }
+.step { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; }
+.step .n { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font: 600 12px/26px var(--mono); text-align: center; margin-top: 1px; }
+.step > div { min-width: 0; }
+.step b { font-weight: 600; }
+.stepgroup { font: 600 12px/1 var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: .06em; margin: 20px 0 4px; }
+
+.box { border-radius: 10px; padding: 14px 16px; margin: 18px 0; }
+.box > :first-child { margin-top: 0; } .box > :last-child { margin-bottom: 0; }
+.tip { background: var(--tip-bg); }
+.warn { background: var(--warn-bg); }
+.box h4 { font: 600 13px/1.2 var(--mono); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 8px; color: var(--accent); }
+.qa dt { font-weight: 600; margin-top: 10px; }
+.qa dd { margin: 2px 0 0; color: var(--fg); }
+
+.tbl { overflow-x: auto; margin: 12px 0 18px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 560px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 600 12px/1.3 var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+
+pre.tree { background: var(--code-bg); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font: 13px/1.55 var(--mono); margin: 12px 0 18px; }
+
+.pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; margin: 14px 0 18px; }
+.pipe { flex: 1 1 150px; min-width: 0; border: 1.5px solid var(--rule); background: var(--surface); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; }
+.pipe b { display: block; font: 600 13px/1.3 var(--display); margin-bottom: 3px; }
+.pipe .n { font: 600 11px var(--mono); color: var(--accent); }
+.pipe.gate { border-color: var(--ops-s); background: var(--ops-f); }
+
+.files { font-size: 13.5px; color: var(--muted); margin: 6px 0 0; }
+.files code { color: var(--fg); }
+footer { padding-block: 40px 60px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--rule); margin-top: 40px; }
+@media (max-width: 560px) { body { font-size: 15px; } .step { grid-template-columns: 26px minmax(0, 1fr); gap: 10px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; }
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="hs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+</svg>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">CS5224 · LectureKaki · read-through</div>
+  <h1>LectureKaki, part by part</h1>
+  <p class="lede">The whole system split into six pieces, each with its own diagram. Numbers on the arrows match the numbered steps underneath, so you can follow one request from the browser to the database and back. The file paths point at the code that does each step.</p>
+  <div class="legend"><span class="lg"><i class="sw k-user"></i>You / the browser</span><span class="lg"><i class="sw k-edge"></i>AWS front doors</span><span class="lg"><i class="sw k-fn"></i>Lambda functions</span><span class="lg"><i class="sw k-data"></i>Storage</span><span class="lg"><i class="sw k-auth"></i>Identity</span><span class="lg"><i class="sw k-ext"></i>Outside services</span><span class="lg"><i class="sw k-ops"></i>Scheduling & alerts</span></div>
+</div></header>
+
+<nav class="parts" aria-label="Parts"><div class="wrap">
+  <a href="#overview"><b>0</b>Big picture</a>
+  <a href="#site"><b>1</b>Site &amp; sign-in</a>
+  <a href="#rest"><b>2</b>REST API</a>
+  <a href="#forum"><b>3</b>Forum &amp; PDFs</a>
+  <a href="#live"><b>4</b>Live updates</a>
+  <a href="#jobs"><b>5</b>Weekly jobs</a>
+  <a href="#alerts"><b>6</b>Alerts</a>
+  <a href="#deploy"><b>7</b>CI/CD</a>
+  <a href="#data"><b>DB</b>Data model</a>
+  <a href="#ta"><b>?</b>TA questions</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ================= 0 ================= -->
+<section class="part" id="overview">
+  <div class="partno">Part 0</div>
+  <h2>The big picture</h2>
+  <p class="oneliner">A React site on CloudFront, a FastAPI backend on Lambda, and a few small Lambdas around it. No server runs all the time.</p>
+
+  <p>This is your team's own diagram from <code>docs/diagrams/architecture.svg</code>. It's the one the TA is most likely to have seen, so get comfortable reading it first. Every box on it is explained in one of the parts below.</p>
+  <div class="fig teamfig"><img src="../docs/diagrams/architecture.svg" alt="Team architecture diagram: students reach CloudFront, Cognito, the HTTP API with FastAPI on Lambda, and the WebSocket API with its Lambdas; weekly jobs and CloudWatch alarms at the bottom."></div>
+  <p class="figcap">Team diagram, generated by <code>docs/diagrams/architecture.py</code> (Python "diagrams" library).</p>
+
+  <h3>What happens where, in one table</h3>
+  <div class="tbl"><table>
+    <tr><th>Concern</th><th>AWS service</th><th>Our code</th><th>Part</th></tr>
+    <tr><td>Serve the website and lecture data</td><td>CloudFront + private S3</td><td><code>frontend/</code>, <code>hosting.tf</code></td><td>1, 5</td></tr>
+    <tr><td>Sign in (NUS emails only)</td><td>Cognito + pre-signup Lambda</td><td><code>auth.ts</code>, <code>lambdas/pre_signup</code></td><td>1</td></tr>
+    <tr><td>Timetable, profile, forum reads and writes</td><td>API Gateway HTTP API → Lambda</td><td><code>backend/app</code> (FastAPI)</td><td>2, 3</td></tr>
+    <tr><td>PDF attachments</td><td>S3 with presigned URLs</td><td><code>forum/attachments.py</code></td><td>3</td></tr>
+    <tr><td>Live chat updates</td><td>API Gateway WebSocket API + 2 Lambdas</td><td><code>gateway.py</code>, <code>delivery.py</code></td><td>4</td></tr>
+    <tr><td>Weekly lecture refresh, PDF cleanup</td><td>EventBridge Scheduler → Lambdas, Bedrock</td><td><code>jobs/lecture_ingest</code>, <code>cleanup.py</code></td><td>5</td></tr>
+    <tr><td>Tell the team when something breaks</td><td>CloudWatch alarms → SNS email</td><td><code>api.tf</code>, <code>ingest.tf</code></td><td>6</td></tr>
+    <tr><td>Build, test, deploy</td><td>GitHub Actions + Terraform</td><td><code>.github/workflows</code>, <code>infra/terraform</code></td><td>7</td></tr>
+  </table></div>
+
+  <div class="box tip">
+    <h4>The one idea to hold onto</h4>
+    <p><b>Everything is serverless and stateless.</b> A Lambda runs for one request or event and then stops, remembering nothing. Anything that has to last lives in a managed service: files in S3, records in DynamoDB, open sockets in API Gateway, users in Cognito. That's why it scales by itself, and why you pay only for what is used.</p>
+  </div>
+
+  <h3>The Lambda functions</h3>
+  <p>Six functions. The first four are built from the <b>same zip</b> (<code>build/api.zip</code>) and differ only in which handler in <code>backend/app/aws_lambda.py</code> they start.</p>
+  <div class="tbl"><table>
+    <tr><th>Function</th><th>Handler</th><th>Started by</th><th>Does</th></tr>
+    <tr><td>FastAPI (API)</td><td><code>http_handler</code> = <code>Mangum(app)</code></td><td>HTTP API, every request</td><td>All REST endpoints</td></tr>
+    <tr><td>forum live</td><td><code>websocket_handler</code></td><td>WebSocket API events</td><td>Checks tickets, tracks connections</td></tr>
+    <tr><td>fan-out</td><td><code>fanout_handler</code></td><td>FastAPI, asynchronously</td><td>Pushes an event to everyone in a room</td></tr>
+    <tr><td>PDF cleanup</td><td><code>cleanup_handler</code></td><td>Scheduler, Mon 00:05</td><td>Deletes closed rooms' PDFs</td></tr>
+    <tr><td>ingest</td><td><code>jobs/lecture_ingest/handler.py</code></td><td>Scheduler, Mon 03:00</td><td>Builds lecture JSON from NUSMods</td></tr>
+    <tr><td>pre-signup</td><td><code>lambdas/pre_signup/handler.py</code></td><td>Cognito, on sign-up</td><td>Rejects non-<code>@u.nus.edu</code> emails</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= 1 ================= -->
+<section class="part" id="site">
+  <div class="partno">Part 1</div>
+  <h2>Static site and sign-in</h2>
+  <p class="oneliner">How the page reaches the browser, and how a student proves who they are.</p>
+  <div class="fig"><svg viewBox="0 0 1000 460" role="img" aria-label="Part 1: static site and sign-in" style="min-width:760px"><rect class="b k-user" x="20" y="190" width="150" height="90" rx="8"/><text class="bt" x="95.0" y="232.0">Browser</text><text class="bs" x="95.0" y="248.0">React app</text><rect class="b k-edge" x="300" y="40" width="200" height="70" rx="8"/><text class="bt" x="400.0" y="72.0">CloudFront</text><text class="bs" x="400.0" y="88.0">CDN + routing function</text><rect class="b k-data" x="620" y="40" width="200" height="70" rx="8"/><text class="bt" x="720.0" y="72.0">S3 web bucket</text><text class="bs" x="720.0" y="88.0">private, no public access</text><rect class="b k-auth" x="300" y="200" width="200" height="70" rx="8"/><text class="bt" x="400.0" y="232.0">Cognito hosted UI</text><text class="bs" x="400.0" y="248.0">user pool + app client</text><rect class="b k-fn" x="620" y="200" width="200" height="70" rx="8"/><text class="bt" x="720.0" y="232.0">pre-signup Lambda</text><text class="bs" x="720.0" y="248.0">@u.nus.edu only</text><rect class="b k-edge" x="300" y="360" width="200" height="70" rx="8"/><text class="bt" x="400.0" y="392.0">API Gateway</text><text class="bs" x="400.0" y="408.0">HTTP API</text><rect class="b k-fn" x="620" y="360" width="200" height="70" rx="8"/><text class="bt" x="720.0" y="392.0">FastAPI Lambda</text><text class="bs" x="720.0" y="408.0">get_current_user</text><rect class="b k-auth" x="870" y="360" width="110" height="70" rx="8"/><text class="bt" x="925.0" y="392.0">Cognito</text><text class="bs" x="925.0" y="408.0">JWKS keys</text><polyline class="a" points="170,205 298,82" marker-end="url(#h)"/><rect class="lbg" x="186.2" y="130" width="91.6" height="20" rx="10"/><circle class="bdg" cx="197.2" cy="140" r="10"/><text class="bdt" x="197.2" y="144">1</text><text class="lt" x="212.2" y="144">load site</text><polyline class="a" points="500,75 618,75" marker-end="url(#h)"/><rect class="lbg" x="510.0" y="65.0" width="98.0" height="20" rx="10"/><circle class="bdg" cx="521.0" cy="75.0" r="10"/><text class="bdt" x="521.0" y="79.0">2</text><text class="lt" x="536.0" y="79.0">OAC-signed</text><polyline class="a" points="170,222 298,222" marker-end="url(#h)"/><rect class="lbg" x="194.6" y="212" width="78.80000000000001" height="20" rx="10"/><circle class="bdg" cx="205.6" cy="222" r="10"/><text class="bdt" x="205.6" y="226">3</text><text class="lt" x="220.6" y="226">sign in</text><polyline class="a" points="500,235 618,235" marker-end="url(#h)"/><rect class="lbg" x="510.0" y="225.0" width="98.0" height="20" rx="10"/><circle class="bdg" cx="521.0" cy="235.0" r="10"/><text class="bdt" x="521.0" y="239.0">4</text><text class="lt" x="536.0" y="239.0">on sign-up</text><polyline class="a dash" points="298,255 172,255" marker-end="url(#h)"/><rect class="lbg" x="181.8" y="252" width="104.4" height="20" rx="10"/><circle class="bdg" cx="192.8" cy="262" r="10"/><text class="bdt" x="192.8" y="266">5</text><text class="lt" x="207.8" y="266">code→tokens</text><polyline class="a" points="170,268 298,390" marker-end="url(#h)"/><rect class="lbg" x="178.6" y="322" width="110.80000000000001" height="20" rx="10"/><circle class="bdg" cx="189.6" cy="332" r="10"/><text class="bdt" x="189.6" y="336">6</text><text class="lt" x="204.6" y="336">Bearer token</text><polyline class="a" points="500,395 618,395" marker-end="url(#h)"/><rect class="lbg" x="522.8" y="385.0" width="72.4" height="20" rx="10"/><circle class="bdg" cx="533.8" cy="395.0" r="10"/><text class="bdt" x="533.8" y="399.0">7</text><text class="lt" x="548.8" y="399.0">invoke</text><polyline class="a" points="820,395 868,395" marker-end="url(#h)"/><circle class="bdg" cx="844" cy="376" r="10"/><text class="bdt" x="844" y="380">8</text></svg></div>
+  <p class="figcap">Dashed arrow = a response or redirect coming back.</p>
+
+  <div class="stepgroup">Loading the site</div>
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>The browser asks CloudFront for the page.</b> CloudFront is AWS's CDN: copies are cached in edge locations near the user. A small <b>CloudFront Function</b> (JavaScript that runs at the edge on every request) rewrites React page paths such as <code>/forum/…</code> or <code>/timetable</code> to <code>/index.html</code>. Without it, refreshing on <code>/forum</code> would give a 404, because there's no file called "forum" in S3. Paths under <code>/assets/</code> and <code>/lectures/</code> pass through unchanged. HTTP is redirected to HTTPS, and AWS's managed security-headers policy is added to every response.</div></li>
+    <li class="step"><span class="n">2</span><div><b>CloudFront fetches from S3 using OAC.</b> The web bucket blocks all public access. Its bucket policy lets exactly one caller read: the CloudFront service, and only when the request comes from <i>our</i> distribution (<code>AWS:SourceArn</code> condition). OAC (Origin Access Control) means CloudFront signs each request to S3 with SigV4. So nobody can bypass the CDN and read the bucket directly.</div></li>
+  </ul>
+  <div class="box tip"><h4>Caching, in one sentence each</h4>
+    <p><code>assets/*</code> (built JS/CSS with hashed filenames) are cached for a year as <code>immutable</code>, because a new build gets new filenames. <code>index.html</code> is <code>no-cache</code>, so a deploy shows up immediately. Lecture snapshot files are cached for 1 day as <code>immutable</code>, and the <code>lectures/current.json</code> pointer is <code>no-cache</code> (see Part 5). CloudFront's cache policy has a default TTL of 0, so it follows whatever <code>Cache-Control</code> header each S3 object carries.</p>
+  </div>
+
+  <div class="stepgroup">Signing in</div>
+  <ul class="steps">
+    <li class="step"><span class="n">3</span><div><b>The browser redirects to Cognito's hosted login page</b> using the <b>authorization code flow with PKCE</b> (<code>frontend/src/features/forum/auth.ts</code>). Before redirecting, the app creates two random values. <code>code_verifier</code> stays secret in the tab, and its SHA-256 hash (<code>code_challenge</code>, method S256) is sent to Cognito. <code>state</code> is also sent and is checked when the browser comes back, which blocks forged login responses (CSRF).</div></li>
+    <li class="step"><span class="n">4</span><div><b>On sign-up, Cognito calls the pre-signup Lambda.</b> It checks the email against a regex for <code>…@u.nus.edu</code>. Any other address raises an error, and Cognito refuses the account. Users also confirm their email with a code.</div></li>
+    <li class="step"><span class="n">5</span><div><b>Cognito redirects back to <code>/auth/callback?code=…&amp;state=…</code>.</b> The app checks that <code>state</code> matches, then POSTs the code <i>plus the original verifier</i> to Cognito's <code>/oauth2/token</code>. Cognito hashes the verifier and compares it with the challenge from step 3. A stolen code is therefore useless without the verifier. It returns an <b>access token</b> (15 min), an ID token and a <b>refresh token</b> (30 days).</div></li>
+    <li class="step"><span class="n">6</span><div><b>Every API call carries <code>Authorization: Bearer &lt;access token&gt;</code>.</b> Tokens live in <code>sessionStorage</code>, so each tab has its own and they're gone when the tab closes. A non-secret cookie only remembers "this browser signed in before", and a <code>localStorage</code> value tells other tabs when you log out.</div></li>
+    <li class="step"><span class="n">7</span><div><b>API Gateway invokes the FastAPI Lambda</b> (details in Part 2).</div></li>
+    <li class="step"><span class="n">8</span><div><b>FastAPI verifies the token itself</b> (<code>backend/app/modules/auth/dependencies.py</code>). It downloads Cognito's public signing keys (JWKS) once and caches them, then checks: algorithm is <code>RS256</code> and the signature is valid, not expired, the issuer is our user pool, <code>client_id</code> is our app, <code>token_use</code> is <code>access</code> (an ID token is rejected), and <code>sub</code> is present. The <code>sub</code> (a stable user ID) becomes the user ID for timetables, topics and message authors. A bad token gets <b>401</b>. If keys or configuration are unavailable, it gets <b>503</b>.</div></li>
+  </ul>
+
+  <div class="box warn"><h4>Logging out</h4><p>The app clears local tokens, asks Cognito to revoke the refresh token (<code>/oauth2/revoke</code>) and ends the hosted session. An access token that was already issued stays valid until it expires (at most 15 min), because JWTs are checked offline. That's the usual trade-off with short-lived JWTs.</p></div>
+  <p class="files">Files: <code>infra/terraform/hosting.tf</code> · <code>infra/auth.yaml</code> (Cognito, CloudFormation) · <code>frontend/src/features/forum/auth.ts</code> · <code>backend/app/modules/auth/dependencies.py</code> · <code>backend/lambdas/pre_signup/handler.py</code></p>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="part" id="rest">
+  <div class="partno">Part 2</div>
+  <h2>REST API and storage</h2>
+  <p class="oneliner">One FastAPI app, packaged into one Lambda, behind one catch-all API Gateway route.</p>
+  <div class="fig"><svg viewBox="0 0 1000 470" role="img" aria-label="Part 2: REST API and storage" style="min-width:760px"><rect class="b k-user" x="20" y="175" width="150" height="90" rx="8"/><text class="bt" x="95.0" y="210.0">Browser</text><text class="bs" x="95.0" y="226.0">Timetable · Profile</text><text class="bs" x="95.0" y="240.0">Forum pages</text><rect class="b k-edge" x="255" y="175" width="170" height="90" rx="8"/><text class="bt" x="340.0" y="210.0">API Gateway</text><text class="bs" x="340.0" y="226.0">HTTP API</text><text class="bs" x="340.0" y="240.0">route: $default</text><rect class="c k-fn" x="500" y="40" width="280" height="360" rx="10"/><text class="ct" x="512" y="60">FastAPI Lambda  ·  1024 MB  ·  29 s</text><rect class="b k-fn2" x="520" y="70" width="240" height="46" rx="8"/><text class="bt" x="640.0" y="90.0">Mangum adapter</text><text class="bs" x="640.0" y="106.0">Lambda event ⇄ ASGI</text><rect class="b k-fn2" x="520" y="138" width="240" height="46" rx="8"/><text class="bt" x="640.0" y="158.0">FastAPI app (main.py)</text><text class="bs" x="640.0" y="174.0">CORS · routers · errors</text><rect class="b k-fn2" x="520" y="206" width="115" height="40" rx="8"/><text class="bt" x="577.5" y="230.0">auth</text><rect class="b k-fn2" x="645" y="206" width="115" height="40" rx="8"/><text class="bt" x="702.5" y="230.0">timetable</text><rect class="b k-fn2" x="520" y="256" width="115" height="40" rx="8"/><text class="bt" x="577.5" y="280.0">profile</text><rect class="b k-fn2" x="645" y="256" width="115" height="40" rx="8"/><text class="bt" x="702.5" y="280.0">forum</text><text class="note" x="640" y="325">every protected route:</text><text class="note mono" x="640" y="343">Depends(get_current_user)</text><text class="note" x="640" y="368">user id = verified JWT "sub"</text><polyline class="a" points="640,116 640,136" marker-end="url(#h)"/><polyline class="a" points="640,184 640,204" marker-end="url(#h)"/><rect class="b k-data" x="840" y="30" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="55.0">DynamoDB</text><text class="bs" x="910.0" y="71.0">timetables</text><rect class="b k-data" x="840" y="100" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="125.0">DynamoDB</text><text class="bs" x="910.0" y="141.0">profiles</text><rect class="b k-data" x="840" y="170" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="195.0">DynamoDB</text><text class="bs" x="910.0" y="211.0">forum (single table)</text><rect class="b k-data" x="840" y="240" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="265.0">S3 forum PDFs</text><text class="bs" x="910.0" y="281.0">presigned URLs</text><rect class="b k-ext" x="840" y="330" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="355.0">NUSMods API</text><text class="bs" x="910.0" y="371.0">api.nusmods.com/v2</text><polyline class="a" points="170,220 253,220" marker-end="url(#h)"/><circle class="bdg" cx="211" cy="220" r="10"/><text class="bdt" x="211" y="224">1</text><polyline class="a" points="425,220 462,220 462,93 518,93" marker-end="url(#h)"/><circle class="bdg" cx="462" cy="160" r="10"/><text class="bdt" x="462" y="164">2</text><polyline class="a" points="780,58 838,58" marker-end="url(#h)" marker-start="url(#hs)"/><circle class="bdg" cx="809" cy="58" r="10"/><text class="bdt" x="809" y="62">3</text><polyline class="a" points="780,128 838,128" marker-end="url(#h)" marker-start="url(#hs)"/><circle class="bdg" cx="809" cy="128" r="10"/><text class="bdt" x="809" y="132">4</text><polyline class="a" points="780,198 838,198" marker-end="url(#h)" marker-start="url(#hs)"/><circle class="bdg" cx="809" cy="198" r="10"/><text class="bdt" x="809" y="202">5</text><polyline class="a" points="780,268 838,268" marker-end="url(#h)"/><circle class="bdg" cx="809" cy="268" r="10"/><text class="bdt" x="809" y="272">6</text><polyline class="a" points="780,358 838,358" marker-end="url(#h)"/><circle class="bdg" cx="809" cy="358" r="10"/><text class="bdt" x="809" y="362">7</text><polyline class="a" points="95,265 95,440 910,440 910,388" marker-end="url(#h)"/><rect class="lbg" x="335.0" y="430" width="290.0" height="20" rx="10"/><circle class="bdg" cx="346.0" cy="440" r="10"/><text class="bdt" x="346.0" y="444">8</text><text class="lt" x="361.0" y="444">browser fetches moduleList.json directly</text></svg></div>
+
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>The browser sends an ordinary HTTPS request</b> to the HTTP API's <code>execute-api</code> URL, for example <code>PUT /timetable/semesters</code> with the JWT in the header. The browser first checks CORS: FastAPI's <code>CORSMiddleware</code> only allows our website origins and the methods GET/POST/PUT/DELETE.</div></li>
+    <li class="step"><span class="n">2</span><div><b>API Gateway has a single route, <code>$default</code>, with an <code>AWS_PROXY</code> integration.</b> It doesn't route anything itself. It packs the whole request (method, path, headers, body) into a JSON <i>event</i> and invokes the Lambda. Inside the Lambda, <b>Mangum</b> turns that event into an ASGI request, FastAPI routes it to the right function, and Mangum turns the response back into JSON that API Gateway sends to the browser. Locally, uvicorn replaces Mangum and the FastAPI code is unchanged. The Lambda has a 29-second timeout because API Gateway gives up at 30.</div></li>
+    <li class="step"><span class="n">3</span><div><b>Timetable</b> (<code>modules/timetable</code>): one DynamoDB item per user (key <code>user_id</code> = Cognito <code>sub</code>), holding a "book" of four semesters' lesson selections. Saving replaces the whole item, so the last write wins. Endpoints: <code>GET/PUT /timetable/semesters</code> (the older <code>/timetable</code> routes still work).</div></li>
+    <li class="step"><span class="n">4</span><div><b>Profile</b> (<code>modules/profile</code>): interest topics (an ordered list) and username, stored in the profiles table (also keyed by <code>user_id</code>). <code>PUT /profile/topics</code> keeps the order and drops duplicates. Signed out, topics live in <code>localStorage</code>. On sign-in, browser topics are copied up only if the account has none.</div></li>
+    <li class="step"><span class="n">5</span><div><b>Forum</b> (<code>modules/forum</code>): messages, upload records, tickets and connections all live in one table using the single-table pattern (see <a href="#data">Data model</a>). Details are in Parts 3 and 4.</div></li>
+    <li class="step"><span class="n">6</span><div><b>PDFs</b>: the API never streams file bytes to or from the browser. It hands out short-lived <b>presigned URLs</b> and only reads the file once, to check it (Part 3).</div></li>
+    <li class="step"><span class="n">7</span><div><b>NUSMods</b>: when you save a timetable, the backend fetches each module from <code>api.nusmods.com/v2</code> and <b>checks your selections really exist</b> (right semester, right lesson type and class number). Responses are capped at 5 MB. A user can't save made-up lessons by calling the API directly.</div></li>
+    <li class="step"><span class="n">8</span><div><b>Some data never touches our API.</b> The Timetable page downloads NUSMods' <code>moduleList.json</code> straight from the browser for "Add a module" search, and Discover reads lecture JSON from CloudFront. <b>Both searches run entirely in the browser.</b></div></li>
+  </ul>
+
+  <h3>All the REST endpoints</h3>
+  <div class="tbl"><table>
+    <tr><th>Method &amp; path</th><th>Auth</th><th>What it does</th></tr>
+    <tr><td><code>GET /health</code></td><td>no</td><td>Returns <code>status: ok</code> (used by deploy and smoke tests)</td></tr>
+    <tr><td><code>GET /auth/me</code></td><td>yes</td><td>Who am I (from the verified token)</td></tr>
+    <tr><td><code>GET · PUT /timetable/semesters</code></td><td>yes</td><td>Load / save the four-semester book</td></tr>
+    <tr><td><code>GET · PUT · DELETE /timetable</code></td><td>yes</td><td>Older single-timetable routes</td></tr>
+    <tr><td><code>GET /profile</code>, <code>PUT /profile/topics</code>, <code>PUT /profile/username</code></td><td>yes</td><td>Profile data</td></tr>
+    <tr><td><code>GET · POST /rooms/{room}/messages</code></td><td>yes</td><td>Read history (cursor pages, ≤100) / post a message</td></tr>
+    <tr><td><code>DELETE /rooms/{room}/messages/{id}</code></td><td>yes</td><td>Delete your own message</td></tr>
+    <tr><td><code>POST /rooms/{room}/attachment-uploads</code></td><td>yes</td><td>Start a PDF upload, get a presigned PUT URL</td></tr>
+    <tr><td><code>GET /rooms/{room}/attachment-uploads/{id}</code></td><td>yes</td><td>Check and validate the uploaded PDF</td></tr>
+    <tr><td><code>GET /rooms/{room}/messages/{id}/attachment</code></td><td>yes</td><td>Get a presigned download URL</td></tr>
+    <tr><td><code>POST /rooms/{room}/connection-ticket</code></td><td>yes</td><td>Get a one-time WebSocket ticket (Part 4)</td></tr>
+  </table></div>
+  <p class="files">Interactive docs run at <code>/docs</code> (Swagger, generated by FastAPI). Files: <code>backend/app/main.py</code> · <code>backend/app/aws_lambda.py</code> · <code>backend/app/modules/*</code> · <code>infra/terraform/api.tf</code> · <code>storage.tf</code></p>
+</section>
+
+<!-- ================= 3 ================= -->
+<section class="part" id="forum">
+  <div class="partno">Part 3</div>
+  <h2>Forum: messages and PDF attachments</h2>
+  <p class="oneliner">One room per lecture session. Posting is plain HTTP; PDFs go straight between the browser and S3.</p>
+
+  <h3>What a "room" is</h3>
+  <p>Every lecture <i>session</i> (one module, one date, one time, one venue) has its own room. The room ID is built from the session ID plus the term:</p>
+  <pre class="tree">CS2040-LEC-1@2026-11-17-1000-LT19@2026-2027@1
+└─ module ─┘ └type┘└class┘ └── date ──┘ └time┘ └venue┘ └acad year┘ └sem┘</pre>
+  <p>The browser only shows rooms that exist in the current lecture catalogue. The backend checks the ID's format, date, time and academic year. <b>A room closes at Sunday 23:59 Singapore time of its lecture's week.</b> After that, <code>room_closes_at</code> in <code>forum/service.py</code> makes the API return <b>403</b> for reading, posting, uploading and tickets, so a hand-typed URL can't get around the UI.</p>
+
+  <div class="fig"><svg viewBox="0 0 1000 748" role="img" aria-label="Part 3: messages and PDF attachments" style="min-width:760px"><line class="life" x1="140.0" y1="72" x2="140.0" y2="738"/><rect class="b k-user" x="55.0" y="20" width="170" height="52" rx="8"/><text class="bt" x="140.0" y="43.0">Browser</text><text class="bs" x="140.0" y="59.0">Forum page</text><line class="life" x1="380.0" y1="72" x2="380.0" y2="738"/><rect class="b k-fn" x="295.0" y="20" width="170" height="52" rx="8"/><text class="bt" x="380.0" y="43.0">FastAPI Lambda</text><text class="bs" x="380.0" y="59.0">via HTTP API</text><line class="life" x1="620.0" y1="72" x2="620.0" y2="738"/><rect class="b k-data" x="535.0" y="20" width="170" height="52" rx="8"/><text class="bt" x="620.0" y="43.0">DynamoDB</text><text class="bs" x="620.0" y="59.0">forum table</text><line class="life" x1="860.0" y1="72" x2="860.0" y2="738"/><rect class="b k-data" x="775.0" y="20" width="170" height="52" rx="8"/><text class="bt" x="860.0" y="43.0">S3 PDF bucket</text><text class="bs" x="860.0" y="59.0">lecturekaki-forum</text><line class="sep" x1="20" y1="90" x2="980" y2="90"/><text class="sept" x="500.0" y="106">Upload a PDF (optional)</text><line class="a" x1="144.0" y1="144" x2="374.0" y2="144" marker-end="url(#h)"/><rect class="lbg" x="113.79999999999998" y="124" width="292.40000000000003" height="18" rx="9"/><circle class="bdg" cx="124.79999999999998" cy="133" r="10"/><text class="bdt" x="124.79999999999998" y="137">1</text><text class="mt" x="138.79999999999998" y="137" text-anchor="start">POST /attachment-uploads {filename, size}</text><line class="a" x1="384.0" y1="184" x2="614.0" y2="184" marker-end="url(#h)"/><rect class="lbg" x="401.8" y="164" width="196.4" height="18" rx="9"/><circle class="bdg" cx="412.8" cy="173" r="10"/><text class="bdt" x="412.8" y="177">2</text><text class="mt" x="426.8" y="177" text-anchor="start">quota ≤10/h, put UPLOAD#id</text><line class="a dash" x1="376.0" y1="224" x2="146.0" y2="224" marker-end="url(#h)"/><rect class="lbg" x="168.2" y="204" width="183.60000000000002" height="18" rx="9"/><circle class="bdg" cx="179.2" cy="213" r="10"/><text class="bdt" x="179.2" y="217">3</text><text class="mt" x="193.2" y="217" text-anchor="start">presigned PUT URL (60 s)</text><line class="a" x1="144.0" y1="264" x2="854.0" y2="264" marker-end="url(#h)"/><rect class="lbg" x="395.4" y="244" width="209.20000000000002" height="18" rx="9"/><circle class="bdg" cx="406.4" cy="253" r="10"/><text class="bdt" x="406.4" y="257">4</text><text class="mt" x="420.4" y="257" text-anchor="start">PUT file  (If-None-Match: *)</text><line class="a" x1="144.0" y1="304" x2="374.0" y2="304" marker-end="url(#h)"/><rect class="lbg" x="190.6" y="284" width="138.8" height="18" rx="9"/><circle class="bdg" cx="201.6" cy="293" r="10"/><text class="bdt" x="201.6" y="297">5</text><text class="mt" x="215.6" y="297" text-anchor="start">GET upload status</text><line class="a" x1="384.0" y1="344" x2="854.0" y2="344" marker-end="url(#h)"/><rect class="lbg" x="528.2" y="324" width="183.60000000000002" height="18" rx="9"/><circle class="bdg" cx="539.2" cy="333" r="10"/><text class="bdt" x="539.2" y="337">6</text><text class="mt" x="553.2" y="337" text-anchor="start">HEAD + GET exact version</text><polyline class="a" points="380.0,372 414.0,372 414.0,388 384.0,388" marker-end="url(#h)"/><circle class="bdg" cx="430.0" cy="380" r="10"/><text class="bdt" x="430.0" y="384">7</text><text class="mt" x="446.0" y="384" text-anchor="start">is it a real PDF? → mark ready</text><line class="sep" x1="20" y1="410" x2="980" y2="410"/><text class="sept" x="500.0" y="426">Post the message</text><line class="a" x1="144.0" y1="464" x2="374.0" y2="464" marker-end="url(#h)"/><rect class="lbg" x="142.6" y="444" width="234.8" height="18" rx="9"/><circle class="bdg" cx="153.6" cy="453" r="10"/><text class="bdt" x="153.6" y="457">8</text><text class="mt" x="167.6" y="457" text-anchor="start">POST /messages {text, upload_id}</text><line class="a" x1="384.0" y1="504" x2="614.0" y2="504" marker-end="url(#h)"/><rect class="lbg" x="369.8" y="484" width="260.4" height="18" rx="9"/><circle class="bdg" cx="380.8" cy="493" r="10"/><text class="bdt" x="380.8" y="497">9</text><text class="mt" x="394.8" y="497" text-anchor="start">transaction: claim upload + put MSG#</text><line class="a dash" x1="376.0" y1="544" x2="146.0" y2="544" marker-end="url(#h)"/><rect class="lbg" x="209.8" y="524" width="100.4" height="18" rx="9"/><circle class="bdg" cx="220.8" cy="533" r="10"/><text class="bdt" x="220.8" y="537">10</text><text class="mt" x="234.8" y="537" text-anchor="start">201 Created</text><line class="sep" x1="20" y1="570" x2="980" y2="570"/><text class="sept" x="500.0" y="586">Someone downloads the PDF</text><line class="a" x1="144.0" y1="624" x2="374.0" y2="624" marker-end="url(#h)"/><rect class="lbg" x="149.0" y="604" width="222.0" height="18" rx="9"/><circle class="bdg" cx="160.0" cy="613" r="10"/><text class="bdt" x="160.0" y="617">11</text><text class="mt" x="174.0" y="617" text-anchor="start">GET …/messages/{id}/attachment</text><line class="a dash" x1="376.0" y1="664" x2="146.0" y2="664" marker-end="url(#h)"/><rect class="lbg" x="165.0" y="644" width="190.0" height="18" rx="9"/><circle class="bdg" cx="176.0" cy="653" r="10"/><text class="bdt" x="176.0" y="657">12</text><text class="mt" x="190.0" y="657" text-anchor="start">presigned GET URL (≤60 s)</text><line class="a" x1="144.0" y1="704" x2="854.0" y2="704" marker-end="url(#h)"/><rect class="lbg" x="398.6" y="684" width="202.8" height="18" rx="9"/><circle class="bdg" cx="409.6" cy="693" r="10"/><text class="bdt" x="409.6" y="697">13</text><text class="mt" x="423.6" y="697" text-anchor="start">download that exact version</text></svg></div>
+  <p class="figcap">Read top to bottom. Dashed = response going back. The PDF part is optional; a plain message is just steps 8–10.</p>
+
+  <div class="stepgroup">Uploading a PDF</div>
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>Ask to upload.</b> The browser sends the filename (must end in <code>.pdf</code>, no slashes or control characters) and the size (1 byte to 15 MB).</div></li>
+    <li class="step"><span class="n">2</span><div><b>Quota and record.</b> A <code>PDFQUOTA#&lt;user&gt;#&lt;hour&gt;</code> counter allows at most <b>10 uploads per user per hour</b>; past that, the API returns 429. Then it saves <code>UPLOAD#&lt;id&gt;</code> with the room, author, size and the S3 key <code>uploads/&lt;room's closing date&gt;/&lt;id&gt;.pdf</code>. The record expires after 10 minutes if it isn't used.</div></li>
+    <li class="step"><span class="n">3</span><div><b>Presigned PUT URL.</b> The API signs a URL that allows <i>exactly one thing</i> for 60 seconds: PUT to that key, with that content type, that exact size, and <code>If-None-Match: *</code> (only if the object doesn't already exist).</div></li>
+    <li class="step"><span class="n">4</span><div><b>The browser uploads straight to S3.</b> The file never passes through Lambda, which keeps Lambda fast and cheap and avoids API Gateway's payload limits. The bucket's CORS rules allow PUT only from our website origins.</div></li>
+    <li class="step"><span class="n">5–7</span><div><b>Check the file.</b> The browser asks for the upload's status. The API reads the object's metadata (it needs a <b>version ID</b>, because the bucket is versioned), then reads that exact version. It checks that the size and type match, the file starts with <code>%PDF-</code>, <code>pypdf</code> can parse it, it isn't encrypted, and it has 1–1000 pages. Only then is the upload marked <i>ready</i> and that version ID recorded. At most 2 checks run at once per Lambda; beyond that it returns "busy, retry" (429).</div></li>
+  </ul>
+  <div class="stepgroup">Posting</div>
+  <ul class="steps">
+    <li class="step"><span class="n">8</span><div><b>Post.</b> Text must be 1–500 characters. The room must be open.</div></li>
+    <li class="step"><span class="n">9</span><div><b>One DynamoDB transaction does two things together:</b> marks the upload as claimed (only if it belongs to this room and author, has the validated version, hasn't expired and isn't already claimed) <i>and</i> writes <code>ROOM#&lt;room&gt; / MSG#&lt;id&gt;</code>. Either both happen or neither does, so one PDF can't be attached to two messages. Messages get <code>expires_at</code> and <code>ttl</code> set to the room's closing time.</div></li>
+    <li class="step"><span class="n">10</span><div><b>201 Created.</b> Right before replying, FastAPI hands the "new message" event to the fan-out Lambda, covered in Part 4.</div></li>
+  </ul>
+  <div class="stepgroup">Downloading</div>
+  <ul class="steps">
+    <li class="step"><span class="n">11–13</span><div><b>Presigned GET.</b> The API signs a URL for the <i>exact version</i> it validated, valid for <b>60 seconds or until the room closes, whichever is sooner</b>. It forces a download (<code>Content-Disposition: attachment</code>, <code>application/octet-stream</code>, <code>no-store</code>), so the browser never renders it inline. The browser opens that URL directly.</div></li>
+  </ul>
+
+  <div class="box tip"><h4>Deleting and expiry</h4>
+    <p><b>Delete:</b> only the author can delete (the API compares the message's author with your token's <code>sub</code>; anyone else gets 403). It deletes the message (a conditional delete, so a race returns 404), broadcasts <code>message.deleted</code>, then deletes the attached PDF version from S3.</p>
+    <p><b>Expiry:</b> messages disappear through DynamoDB TTL (eventually; reads already hide them). PDFs are deleted by the Monday cleanup job (Part 5). Reading history uses cursor-based pages of at most 100.</p>
+  </div>
+  <p class="files">Files: <code>backend/app/modules/forum/api.py</code> · <code>attachments.py</code> · <code>attachment_store.py</code> · <code>service.py</code> · <code>repository.py</code> · <code>infra/terraform/forum.tf</code></p>
+</section>
+
+<!-- ================= 4 ================= -->
+<section class="part" id="live">
+  <div class="partno">Part 4</div>
+  <h2>Live forum updates</h2>
+  <p class="oneliner">The socket is only used to <i>receive</i> updates. All writes still go through HTTP.</p>
+
+  <div class="box tip"><h4>Read this first</h4>
+    <p>A Lambda can't hold a connection open: it runs and then stops. So <b>API Gateway's WebSocket API keeps every socket open</b> and gives each one an ID such as <code>abc123</code>. When something happens on a socket (connect, a message, disconnect), API Gateway calls the <b>live</b> Lambda briefly. When <i>we</i> want to send something to a browser, any Lambda calls API Gateway's <code>PostToConnection(abc123, data)</code>. <b>DynamoDB records which connection IDs are in which room.</b></p>
+  </div>
+
+  <div class="fig"><svg viewBox="0 0 1000 1068" role="img" aria-label="Part 4: live forum updates" style="min-width:760px"><line class="life" x1="100.0" y1="72" x2="100.0" y2="1058"/><rect class="b k-user" x="27.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="100.0" y="43.0">Browsers</text><text class="bs" x="100.0" y="59.0">Bob, Alice</text><line class="life" x1="260.0" y1="72" x2="260.0" y2="1058"/><rect class="b k-fn" x="187.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="260.0" y="43.0">FastAPI Lambda</text><text class="bs" x="260.0" y="59.0">via HTTP API</text><line class="life" x1="420.0" y1="72" x2="420.0" y2="1058"/><rect class="b k-edge" x="347.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="420.0" y="43.0">WebSocket API</text><text class="bs" x="420.0" y="59.0">holds sockets</text><line class="life" x1="580.0" y1="72" x2="580.0" y2="1058"/><rect class="b k-fn" x="507.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="580.0" y="43.0">live Lambda</text><text class="bs" x="580.0" y="59.0">gateway.py</text><line class="life" x1="740.0" y1="72" x2="740.0" y2="1058"/><rect class="b k-fn" x="667.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="740.0" y="43.0">fan-out Lambda</text><text class="bs" x="740.0" y="59.0">delivery.py</text><line class="life" x1="900.0" y1="72" x2="900.0" y2="1058"/><rect class="b k-data" x="827.0" y="20" width="146.0" height="52" rx="8"/><text class="bt" x="900.0" y="43.0">DynamoDB</text><text class="bs" x="900.0" y="59.0">forum table</text><line class="sep" x1="20" y1="90" x2="980" y2="90"/><text class="sept" x="500.0" y="106">A · Bob gets a ticket (normal HTTP)</text><line class="a" x1="104.0" y1="144" x2="254.0" y2="144" marker-end="url(#h)"/><rect class="lbg" x="72.19999999999999" y="124" width="215.60000000000002" height="18" rx="9"/><circle class="bdg" cx="83.19999999999999" cy="133" r="10"/><text class="bdt" x="83.19999999999999" y="137">1</text><text class="mt" x="97.19999999999999" y="137" text-anchor="start">POST /connection-ticket + JWT</text><line class="a" x1="264.0" y1="184" x2="894.0" y2="184" marker-end="url(#h)"/><rect class="lbg" x="504.2" y="164" width="151.60000000000002" height="18" rx="9"/><circle class="bdg" cx="515.2" cy="173" r="10"/><text class="bdt" x="515.2" y="177">2</text><text class="mt" x="529.2" y="177" text-anchor="start">put TICKET#… (30 s)</text><line class="a dash" x1="256.0" y1="224" x2="106.0" y2="224" marker-end="url(#h)"/><rect class="lbg" x="91.39999999999999" y="204" width="177.20000000000002" height="18" rx="9"/><circle class="bdg" cx="102.39999999999999" cy="213" r="10"/><text class="bdt" x="102.39999999999999" y="217">3</text><text class="mt" x="116.39999999999999" y="217" text-anchor="start">wss://…?room=…&amp;ticket=…</text><line class="sep" x1="20" y1="250" x2="980" y2="250"/><text class="sept" x="500.0" y="266">B · Bob opens the socket</text><line class="a" x1="104.0" y1="304" x2="414.0" y2="304" marker-end="url(#h)"/><rect class="lbg" x="187.4" y="284" width="145.2" height="18" rx="9"/><circle class="bdg" cx="198.4" cy="293" r="10"/><text class="bdt" x="198.4" y="297">4</text><text class="mt" x="212.4" y="297" text-anchor="start">new WebSocket(url)</text><line class="a" x1="424.0" y1="344" x2="574.0" y2="344" marker-end="url(#h)"/><rect class="lbg" x="421.0" y="324" width="158.0" height="18" rx="9"/><circle class="bdg" cx="432.0" cy="333" r="10"/><text class="bdt" x="432.0" y="337">5</text><text class="mt" x="446.0" y="337" text-anchor="start">$connect (id abc123)</text><line class="a" x1="584.0" y1="384" x2="894.0" y2="384" marker-end="url(#h)"/><rect class="lbg" x="625.8" y="364" width="228.4" height="18" rx="9"/><circle class="bdg" cx="636.8" cy="373" r="10"/><text class="bdt" x="636.8" y="377">6</text><text class="mt" x="650.8" y="377" text-anchor="start">use ticket, put CONN# (pending)</text><line class="a dash" x1="576.0" y1="424" x2="426.0" y2="424" marker-end="url(#h)"/><rect class="lbg" x="427.4" y="404" width="145.2" height="18" rx="9"/><circle class="bdg" cx="438.4" cy="413" r="10"/><text class="bdt" x="438.4" y="417">7</text><text class="mt" x="452.4" y="417" text-anchor="start">return 200 = allow</text><line class="a dash" x1="416.0" y1="464" x2="106.0" y2="464" marker-end="url(#h)"/><rect class="lbg" x="190.6" y="444" width="138.8" height="18" rx="9"/><circle class="bdg" cx="201.6" cy="453" r="10"/><text class="bdt" x="201.6" y="457">8</text><text class="mt" x="215.6" y="457" text-anchor="start">101 open → onopen</text><line class="sep" x1="20" y1="490" x2="980" y2="490"/><text class="sept" x="500.0" y="506">C · Bob says ready</text><line class="a" x1="104.0" y1="544" x2="414.0" y2="544" marker-end="url(#h)"/><rect class="lbg" x="187.4" y="524" width="145.2" height="18" rx="9"/><circle class="bdg" cx="198.4" cy="533" r="10"/><text class="bdt" x="198.4" y="537">9</text><text class="mt" x="212.4" y="537" text-anchor="start">{&quot;action&quot;:&quot;ready&quot;}</text><line class="a" x1="424.0" y1="584" x2="574.0" y2="584" marker-end="url(#h)"/><rect class="lbg" x="459.4" y="564" width="81.2" height="18" rx="9"/><circle class="bdg" cx="470.4" cy="573" r="10"/><text class="bdt" x="470.4" y="577">10</text><text class="mt" x="484.4" y="577" text-anchor="start">$default</text><line class="a" x1="584.0" y1="624" x2="894.0" y2="624" marker-end="url(#h)"/><rect class="lbg" x="648.2" y="604" width="183.60000000000002" height="18" rx="9"/><circle class="bdg" cx="659.2" cy="613" r="10"/><text class="bdt" x="659.2" y="617">11</text><text class="mt" x="673.2" y="617" text-anchor="start">add ROOM#/CONN# (joined)</text><line class="a" x1="576.0" y1="664" x2="426.0" y2="664" marker-end="url(#h)"/><rect class="lbg" x="411.4" y="644" width="177.20000000000002" height="18" rx="9"/><circle class="bdg" cx="422.4" cy="653" r="10"/><text class="bdt" x="422.4" y="657">12</text><text class="mt" x="436.4" y="657" text-anchor="start">PostToConnection(ready)</text><line class="a dash" x1="416.0" y1="704" x2="106.0" y2="704" marker-end="url(#h)"/><rect class="lbg" x="139.39999999999998" y="684" width="241.20000000000002" height="18" rx="9"/><circle class="bdg" cx="150.39999999999998" cy="693" r="10"/><text class="bdt" x="150.39999999999998" y="697">13</text><text class="mt" x="164.39999999999998" y="697" text-anchor="start">{&quot;type&quot;:&quot;ready&quot;} → reload history</text><line class="sep" x1="20" y1="730" x2="980" y2="730"/><text class="sept" x="500.0" y="746">D · Alice posts a message</text><line class="a" x1="104.0" y1="784" x2="254.0" y2="784" marker-end="url(#h)"/><rect class="lbg" x="120.19999999999999" y="764" width="119.60000000000001" height="18" rx="9"/><circle class="bdg" cx="131.2" cy="773" r="10"/><text class="bdt" x="131.2" y="777">14</text><text class="mt" x="145.2" y="777" text-anchor="start">POST /messages</text><line class="a" x1="264.0" y1="824" x2="894.0" y2="824" marker-end="url(#h)"/><rect class="lbg" x="533.0" y="804" width="94.0" height="18" rx="9"/><circle class="bdg" cx="544.0" cy="813" r="10"/><text class="bdt" x="544.0" y="817">15</text><text class="mt" x="558.0" y="817" text-anchor="start">save MSG#…</text><line class="a" x1="264.0" y1="864" x2="734.0" y2="864" marker-end="url(#h)"/><rect class="lbg" x="421.0" y="844" width="158.0" height="18" rx="9"/><circle class="bdg" cx="432.0" cy="853" r="10"/><text class="bdt" x="432.0" y="857">16</text><text class="mt" x="446.0" y="857" text-anchor="start">async invoke (Event)</text><line class="a dash" x1="256.0" y1="904" x2="106.0" y2="904" marker-end="url(#h)"/><rect class="lbg" x="129.8" y="884" width="100.4" height="18" rx="9"/><circle class="bdg" cx="140.8" cy="893" r="10"/><text class="bdt" x="140.8" y="897">17</text><text class="mt" x="154.8" y="897" text-anchor="start">201 Created</text><line class="a" x1="744.0" y1="944" x2="894.0" y2="944" marker-end="url(#h)"/><rect class="lbg" x="731.4" y="924" width="177.20000000000002" height="18" rx="9"/><circle class="bdg" cx="742.4" cy="933" r="10"/><text class="bdt" x="742.4" y="937">18</text><text class="mt" x="756.4" y="937" text-anchor="start">query ROOM# connections</text><line class="a" x1="736.0" y1="984" x2="426.0" y2="984" marker-end="url(#h)"/><rect class="lbg" x="501.0" y="964" width="158.0" height="18" rx="9"/><circle class="bdg" cx="512.0" cy="973" r="10"/><text class="bdt" x="512.0" y="977">19</text><text class="mt" x="526.0" y="977" text-anchor="start">PostToConnection × N</text><line class="a dash" x1="416.0" y1="1024" x2="106.0" y2="1024" marker-end="url(#h)"/><rect class="lbg" x="197.0" y="1004" width="126.0" height="18" rx="9"/><circle class="bdg" cx="208.0" cy="1013" r="10"/><text class="bdt" x="208.0" y="1017">20</text><text class="mt" x="222.0" y="1017" text-anchor="start">message.created</text></svg></div>
+
+  <div class="stepgroup">A · Get a ticket</div>
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>Ask for a ticket over HTTP</b>, with the normal <code>Authorization: Bearer</code> JWT. FastAPI checks the token and that the room is open.</div></li>
+    <li class="step"><span class="n">2</span><div><b>Save the ticket.</b> It's 32 random bytes (<code>secrets.token_urlsafe</code>), stored hashed as <code>TICKET#…</code> with the room, user and token expiry. It expires in 30 seconds.</div></li>
+    <li class="step"><span class="n">3</span><div><b>Return a ready-to-use URL</b>: <code>wss://&lt;id&gt;.execute-api…/live?room=…&amp;ticket=…</code>.<br><i>Why a ticket?</i> The browser's <code>new WebSocket(url)</code> can't set an Authorization header, so login proof has to go in the URL. URLs get logged, so we don't put the 15-minute JWT there. A ticket works <b>once</b>, for <b>30 seconds</b>, for <b>one room</b>, and only for opening a socket.</div></li>
+  </ul>
+  <div class="stepgroup">B · Open the socket</div>
+  <ul class="steps">
+    <li class="step"><span class="n">4</span><div><b><code>new WebSocket(url)</code></b> sends an HTTP GET with <code>Upgrade: websocket</code>. API Gateway <i>holds</i> that request and doesn't answer yet.</div></li>
+    <li class="step"><span class="n">5</span><div><b>API Gateway calls the live Lambda with route <code>$connect</code></b>, passing the new connection ID, the query string and headers.</div></li>
+    <li class="step"><span class="n">6</span><div><b>The live Lambda checks and records.</b> If the <code>Origin</code> isn't our site it returns 403. It <b>uses up the ticket</b> with a conditional delete: the delete only succeeds if the ticket exists, matches the room and hasn't expired, so it can never be used twice. If that fails it returns 401. Then it writes <code>CONN#abc123</code> = {room, user, token expiry}. This is <b>pending</b>: the connection exists but isn't in the room yet.</div></li>
+    <li class="step"><span class="n">7–8</span><div><b>Returning 200 means "allow".</b> API Gateway then answers the browser with <code>101 Switching Protocols</code>, the socket is open, and the browser fires <code>onopen</code>. With 401/403/503 the socket never opens, and the browser retries after 1 s, 2 s, 4 s … up to 30 s, each time with a new ticket.</div></li>
+  </ul>
+  <div class="stepgroup">C · The ready handshake</div>
+  <ul class="steps">
+    <li class="step"><span class="n">9</span><div><b>Inside <code>onopen</code> the browser sends <code>{"action":"ready"}</code></b> and starts a 10-second timer.</div></li>
+    <li class="step"><span class="n">10–11</span><div><b>API Gateway routes it as <code>$default</code>.</b> The live Lambda runs <code>activate_connection</code>, a DynamoDB transaction that checks <code>CONN#abc123</code> still exists and adds <code>ROOM#&lt;room&gt; / CONN#abc123</code>. <b>From now on, fan-out will send to Bob.</b></div></li>
+    <li class="step"><span class="n">12–13</span><div><b>The Lambda acknowledges</b> with <code>PostToConnection</code> → <code>{"type":"ready"}</code>. The browser clears the timer, <b>reloads history over HTTP</b>, shows any events that arrived meanwhile (de-duplicated by message ID), and only then shows "connected".</div></li>
+  </ul>
+  <div class="box warn"><h4>Why the extra "ready" step exists (PR #30)</h4>
+    <p><code>$connect</code> runs <i>before</i> API Gateway has finished opening the socket. If the connection were added to the room at step 6 and someone posted right then, <code>PostToConnection</code> would fail with <code>GoneException</code>. The code treats that as "user left" and would remove Bob, who would then never get live messages. A <code>ready</code> message can only arrive over an open socket, so receiving it proves the socket works. Only then is Bob added to the room.</p>
+  </div>
+  <div class="stepgroup">D · Someone posts</div>
+  <ul class="steps">
+    <li class="step"><span class="n">14–15</span><div><b>Alice posts over HTTP</b> and FastAPI saves the message (Part 3). It is now stored safely.</div></li>
+    <li class="step"><span class="n">16</span><div><b>FastAPI hands off delivery</b> with <code>lambda.invoke(InvocationType="Event")</code>. That means "queue this and don't wait": AWS returns 202 immediately and runs the fan-out Lambda separately. If this hand-off fails, the post <i>still succeeds</i>; FastAPI logs "Forum broadcast could not be queued", which raises an alarm (Part 6).</div></li>
+    <li class="step"><span class="n">17</span><div><b>Alice gets 201 straight away</b>, even if the room has 200 people in it.</div></li>
+    <li class="step"><span class="n">18</span><div><b>Fan-out re-reads the message</b> (skips it if it was deleted or expired in the meantime) and <b>queries every <code>ROOM#&lt;room&gt; / CONN#*</code></b>.</div></li>
+    <li class="step"><span class="n">19–20</span><div><b><code>PostToConnection</code> for each connection, 16 at a time.</b> API Gateway pushes the data down each socket. A connection whose token has expired is closed. <code>GoneException</code> means the person left, so their record is deleted. Any other error makes the Lambda fail on purpose, so AWS <b>retries it twice</b>. After that, the event goes to SNS and the team gets an email.</div></li>
+  </ul>
+
+  <h3>Keeping the socket healthy</h3>
+  <div class="tbl"><table>
+    <tr><th>Situation</th><th>What happens</th></tr>
+    <tr><td>No traffic for a while</td><td>Browser sends <code>{"action":"ping"}</code> every 4 min (API Gateway closes idle sockets after 10 min)</td></tr>
+    <tr><td>Access token about to expire</td><td>Browser closes the socket ~5 s before expiry and reconnects with a fresh token and ticket</td></tr>
+    <tr><td>Socket open 2 hours</td><td>API Gateway's hard limit; the browser reconnects</td></tr>
+    <tr><td>Tab closed</td><td>API Gateway calls the live Lambda with <code>$disconnect</code>, which deletes the connection records. If that's missed, DynamoDB TTL removes them later</td></tr>
+    <tr><td>Running locally</td><td>No WebSocket API or fan-out: FastAPI serves <code>/rooms/{id}/live</code> and an in-memory hub broadcasts (single process only)</td></tr>
+  </table></div>
+  <div class="box tip"><h4>The rule that makes this safe</h4><p><b>DynamoDB is the source of truth; the socket is a convenience.</b> If a push is ever lost (for example the Lambda crashes between saving and handing off), the message is still stored, and the browser reloads history every time it (re)connects.</p></div>
+  <p class="files">Files: <code>backend/app/modules/forum/realtime.py</code> (tickets, local hub) · <code>gateway.py</code> (live Lambda, publish) · <code>delivery.py</code> (hand-off, fan-out) · <code>frontend/src/features/forum/forumSocket.ts</code></p>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="part" id="jobs">
+  <div class="partno">Part 5</div>
+  <h2>Weekly jobs</h2>
+  <p class="oneliner">Lecture data is pre-built once a week into static JSON. A second job deletes old PDFs.</p>
+  <div class="fig"><svg viewBox="0 0 1000 420" role="img" aria-label="Part 5: weekly jobs" style="min-width:760px"><rect class="b k-ops" x="20" y="170" width="170" height="80" rx="8"/><text class="bt" x="105.0" y="200.0">EventBridge</text><text class="bs" x="105.0" y="216.0">Scheduler</text><text class="bs" x="105.0" y="230.0">Asia/Singapore</text><rect class="b k-fn" x="290" y="50" width="200" height="80" rx="8"/><text class="bt" x="390.0" y="87.0">ingest Lambda</text><text class="bs" x="390.0" y="103.0">jobs/lecture_ingest</text><rect class="b k-fn" x="290" y="290" width="200" height="80" rx="8"/><text class="bt" x="390.0" y="327.0">PDF cleanup Lambda</text><text class="bs" x="390.0" y="343.0">forum/cleanup.py</text><rect class="b k-ext" x="590" y="20" width="180" height="56" rx="8"/><text class="bt" x="680.0" y="45.0">NUSMods API</text><text class="bs" x="680.0" y="61.0">moduleInfo · venues</text><rect class="b k-ext" x="590" y="92" width="180" height="56" rx="8"/><text class="bt" x="680.0" y="117.0">Amazon Bedrock</text><text class="bs" x="680.0" y="133.0">Nova 2 Lite</text><rect class="b k-data" x="590" y="164" width="180" height="56" rx="8"/><text class="bt" x="680.0" y="189.0">S3 web bucket</text><text class="bs" x="680.0" y="205.0">lectures/…</text><rect class="b k-data" x="590" y="290" width="180" height="80" rx="8"/><text class="bt" x="680.0" y="327.0">S3 forum PDFs</text><text class="bs" x="680.0" y="343.0">uploads/&lt;date&gt;/…</text><rect class="b k-edge" x="840" y="164" width="140" height="56" rx="8"/><text class="bt" x="910.0" y="189.0">CloudFront</text><text class="bs" x="910.0" y="205.0">serves JSON</text><polyline class="a" points="190,195 240,195 240,90 288,90" marker-end="url(#h)"/><rect class="lbg" x="194.2" y="135" width="91.6" height="20" rx="10"/><circle class="bdg" cx="205.2" cy="145" r="10"/><text class="bdt" x="205.2" y="149">1</text><text class="lt" x="220.2" y="149">Mon 03:00</text><polyline class="a" points="490,70 588,48" marker-end="url(#h)"/><circle class="bdg" cx="539" cy="59" r="10"/><text class="bdt" x="539" y="63">2</text><polyline class="a" points="490,95 588,120" marker-end="url(#h)"/><circle class="bdg" cx="539" cy="107" r="10"/><text class="bdt" x="539" y="111">3</text><polyline class="a" points="490,118 588,186" marker-end="url(#h)"/><circle class="bdg" cx="539" cy="152" r="10"/><text class="bdt" x="539" y="156">4</text><polyline class="a" points="770,192 838,192" marker-end="url(#h)"/><circle class="bdg" cx="804" cy="192" r="10"/><text class="bdt" x="804" y="196">5</text><polyline class="a" points="190,225 240,225 240,330 288,330" marker-end="url(#h)"/><rect class="lbg" x="194.2" y="265" width="91.6" height="20" rx="10"/><circle class="bdg" cx="205.2" cy="275" r="10"/><text class="bdt" x="205.2" y="279">6</text><text class="lt" x="220.2" y="279">Mon 00:05</text><polyline class="a" points="490,330 588,330" marker-end="url(#h)"/><rect class="lbg" x="480.4" y="302" width="117.2" height="20" rx="10"/><circle class="bdg" cx="491.4" cy="312" r="10"/><text class="bdt" x="491.4" y="316">7</text><text class="lt" x="506.4" y="316">delete closed</text></svg></div>
+
+  <div class="stepgroup">Lecture ingestion (Monday 03:00 SGT)</div>
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>EventBridge Scheduler starts the ingest Lambda</b> (<code>cron(0 3 ? * MON *)</code>, Asia/Singapore). It works out today's semester from the hard-coded academic calendar (AY2026/27), then decides whether a run is due: <b>Mondays of teaching weeks 1–3, or the first Monday of a month</b>. Otherwise it logs "skipped". A manual run with <code>{"date": "…"}</code> always runs.</div></li>
+    <li class="step"><span class="n">2</span><div><b>Fetch from NUSMods</b>: <code>moduleInfo.json</code> for the year and <code>venueInformation.json</code> for the semester, retrying up to 3 times. It keeps only <code>Lecture</code> lessons (not tutorials or labs, and no NUS-ISS courses), then expands "Monday, weeks 1–13" into real dates using the calendar (skipping recess week and public holidays), with times in Singapore time.</div></li>
+    <li class="step"><span class="n">3</span><div><b>Topics.</b> First, keyword rules on the module title. Then <b>Amazon Bedrock (Nova 2 Lite)</b> reads each description and suggests extra topics as numbers from a fixed list (numbers use fewer tokens). <b>A model topic is kept only if one of that topic's keywords appears in the module's title or description</b>, because a wrong topic is worse than a missing one. There are at most 3 topics per module. Answers are cached in <code>lectures/topic-cache.json</code> by model, topic list and module text, so a weekly run only sends new or changed modules.</div></li>
+    <li class="step"><span class="n">4</span><div><b>Publish to S3, but only if something changed.</b> It builds the whole snapshot in memory and computes one SHA-256 <b>fingerprint</b> of all its files (leaving out <code>generatedAt</code> and the random folder name). If that matches <code>contentHash</code> in the live <code>current.json</code>, it writes nothing except a new <code>checkedAt</code> time, and the result says <code>"unchanged": true</code>. Otherwise it writes a full snapshot folder first, then switches the pointer <code>lectures/current.json</code> (explained below). A manual run with <code>{"force": true}</code> publishes anyway.</div></li>
+    <li class="step"><span class="n">5</span><div><b>CloudFront serves those JSON files.</b> Discover loads <code>current.json</code>, follows its <code>path</code>, and loads the week or day it needs. No API call and no database.</div></li>
+  </ul>
+  <pre class="tree">lectures/
+├── current.json                ← pointer + contentHash + checkedAt, no-cache   (written LAST)
+├── topic-cache.json            ← Bedrock answers
+└── &lt;snapshot&gt;/                  ← Cache-Control: public, max-age=86400, immutable
+    ├── index.json
+    ├── modules.json            ← module details + topics
+    ├── weeks/&lt;label&gt;.json       ← e.g. week-07.json
+    └── days/&lt;yyyy-mm-dd&gt;.json</pre>
+  <div class="box tip"><h4>Why the pointer pattern</h4>
+    <p>Browsers never see a half-written update. They keep reading the old snapshot until the single small <code>current.json</code> changes, and then they see the new one. Snapshot files never change after they're written, so they can be cached hard. <b>Rollback</b> = point <code>current.json</code> back at an older snapshot.</p>
+    <p><b>Why the fingerprint (PR #37):</b> most weekly runs find identical data. Skipping the write means no duplicate snapshot folders, and browsers and CloudFront keep their cached files. <code>generatedAt</code> now means "when the data last changed"; Discover shows <code>checkedAt</code> ("last checked"), falling back to <code>generatedAt</code>. The hash only says <i>whether</i> anything changed, not which file.</p>
+    <p><b>Safety checks:</b> empty data is never published. A re-run of the <i>same</i> semester with fewer than half the previous sessions is rejected. A <i>new</i> semester that small is published (the old term is over) but logs <code>SMALL_NEW_SEMESTER</code>, which raises an alarm.</p>
+  </div>
+
+  <div class="stepgroup">PDF cleanup (Monday 00:05 SGT)</div>
+  <ul class="steps">
+    <li class="step"><span class="n">6</span><div><b>The scheduler starts the cleanup Lambda</b> five minutes after the week has rolled over.</div></li>
+    <li class="step"><span class="n">7</span><div><b>It lists every version under <code>uploads/</code></b>. The folder name is the room's closing date, so any folder whose date has passed belongs to closed rooms. It deletes <b>all versions and delete markers</b> there, in batches of 1000, including uploads that were never posted. If any delete fails, the Lambda raises an error so the alarm fires. Its IAM role can only list and delete under <code>uploads/</code>.</div></li>
+  </ul>
+  <div class="box warn"><h4>Known limits</h4><p>The calendar only covers AY2026/27; from August 2027 ingestion fails with "No calendar entry…" and the ingest alarm fires. Special terms aren't ingested. Between terms (for AY2026/27, 23 Nov 2026 – 3 Jan 2027) every week is past, so Discover says the term has ended. Semester 2 is published on Monday 4 Jan 2027.</p></div>
+  <p class="files">Files: <code>backend/jobs/lecture_ingest/</code> (<code>handler.py</code>, <code>nusmods.py</code>, <code>academic_calendar.py</code>, <code>transform.py</code>, <code>topics.py</code>, <code>llm_topics.py</code>, <code>publish.py</code>) · <code>backend/app/modules/forum/cleanup.py</code> · <code>infra/terraform/ingest.tf</code> · <code>forum_cleanup.tf</code></p>
+</section>
+
+<!-- ================= 6 ================= -->
+<section class="part" id="alerts">
+  <div class="partno">Part 6</div>
+  <h2>Monitoring and alerts</h2>
+  <p class="oneliner">9 CloudWatch alarms, one SNS topic, one email list.</p>
+  <div class="fig"><svg viewBox="0 0 1000 440" role="img" aria-label="Part 6: monitoring and alerts" style="min-width:760px"><rect class="b k-edge" x="20" y="20" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="43.0">HTTP API</text><text class="bs" x="105.0" y="59.0">5xx count</text><rect class="b k-fn" x="20" y="84" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="107.0">FastAPI Lambda</text><text class="bs" x="105.0" y="123.0">errors + logs</text><rect class="b k-fn" x="20" y="148" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="171.0">live Lambda</text><text class="bs" x="105.0" y="187.0">errors</text><rect class="b k-fn" x="20" y="212" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="235.0">fan-out Lambda</text><text class="bs" x="105.0" y="251.0">errors + failures</text><rect class="b k-fn" x="20" y="276" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="299.0">ingest Lambda</text><text class="bs" x="105.0" y="315.0">errors + logs</text><rect class="b k-fn" x="20" y="340" width="170" height="52" rx="8"/><text class="bt" x="105.0" y="363.0">PDF cleanup Lambda</text><text class="bs" x="105.0" y="379.0">errors</text><rect class="b k-ops" x="290" y="30" width="230" height="150" rx="8"/><text class="bt" x="405.0" y="88.0">Built-in metrics</text><text class="bs" x="405.0" y="104.0">AWS/Lambda › Errors</text><text class="bs" x="405.0" y="118.0">AWS/ApiGateway › 5xx</text><text class="bs" x="405.0" y="132.0">(AWS emits these itself)</text><rect class="b k-ops" x="290" y="220" width="230" height="150" rx="8"/><text class="bt" x="405.0" y="278.0">Log metric filters</text><text class="bs" x="405.0" y="294.0">&quot;An error occurred running…&quot;</text><text class="bs" x="405.0" y="308.0">&quot;Forum broadcast could not be…&quot;</text><text class="bs" x="405.0" y="322.0">&quot;SMALL_NEW_SEMESTER&quot;</text><rect class="b k-ops" x="600" y="140" width="160" height="110" rx="8"/><text class="bt" x="680.0" y="185.0">9 alarms</text><text class="bs" x="680.0" y="201.0">sum over 5-min windows</text><text class="bs" x="680.0" y="215.0">≥1 or ≥5 → ALARM</text><rect class="b k-ops" x="840" y="120" width="140" height="60" rx="8"/><text class="bt" x="910.0" y="147.0">SNS topic</text><text class="bs" x="910.0" y="163.0">…-alerts</text><rect class="b k-user" x="840" y="230" width="140" height="60" rx="8"/><text class="bt" x="910.0" y="257.0">Team email</text><text class="bs" x="910.0" y="273.0">confirmed subscribers</text><polyline class="a" points="190,46 288,60" marker-end="url(#h)"/><polyline class="a" points="190,110 288,90" marker-end="url(#h)"/><polyline class="a" points="190,174 288,120" marker-end="url(#h)"/><polyline class="a" points="190,238 288,150" marker-end="url(#h)"/><polyline class="a" points="190,302 288,165" marker-end="url(#h)"/><polyline class="a" points="190,366 288,175" marker-end="url(#h)"/><polyline class="a dash" points="190,116 288,250" marker-end="url(#h)"/><polyline class="a dash" points="190,296 288,320" marker-end="url(#h)"/><polyline class="a" points="520,105 598,170" marker-end="url(#h)"/><circle class="bdg" cx="559" cy="137" r="10"/><text class="bdt" x="559" y="141">1</text><polyline class="a" points="520,295 598,225" marker-end="url(#h)"/><circle class="bdg" cx="559" cy="260" r="10"/><text class="bdt" x="559" y="264">2</text><polyline class="a" points="760,180 838,155" marker-end="url(#h)"/><circle class="bdg" cx="799" cy="167" r="10"/><text class="bdt" x="799" y="171">3</text><polyline class="a" points="910,180 910,228" marker-end="url(#h)"/><circle class="bdg" cx="928" cy="204" r="10"/><text class="bdt" x="928" y="208">4</text><polyline class="a dash" points="190,252 230,252 230,412 990,412 990,150 982,150" marker-end="url(#h)"/><rect class="lbg" x="370.2" y="400" width="379.6" height="20" rx="10"/><circle class="bdg" cx="381.2" cy="410" r="10"/><text class="bdt" x="381.2" y="414">5</text><text class="lt" x="396.2" y="414">fan-out event failed after 2 retries → straight to SNS</text></svg></div>
+  <p class="figcap">Solid arrows: built-in metrics. Dashed: log lines counted by a filter.</p>
+  <ul class="steps">
+    <li class="step"><span class="n">1</span><div><b>Built-in metrics.</b> AWS reports Lambda <code>Errors</code> for every failed run (exception, timeout, out of memory) and API Gateway <code>5xx</code> for every server-error response, without any code from us.</div></li>
+    <li class="step"><span class="n">2</span><div><b>Log metric filters</b> turn a specific log line into a number, for problems that aren't crashes: a FastAPI crash caught by Mangum, a failed fan-out hand-off, and <code>SMALL_NEW_SEMESTER</code>.</div></li>
+    <li class="step"><span class="n">3</span><div><b>Each alarm adds up its metric in 5-minute windows.</b> When a window reaches the threshold it goes to ALARM and publishes to SNS, <b>once per change</b> (not once per error). It returns to OK quietly, and no data counts as OK.</div></li>
+    <li class="step"><span class="n">4</span><div><b>SNS emails every confirmed subscriber.</b></div></li>
+    <li class="step"><span class="n">5</span><div><b>A fan-out event that still fails after 2 retries</b> goes straight to the SNS topic (the Lambda's on-failure destination). This isn't an alarm.</div></li>
+  </ul>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Alarm</th><th>Fires on (per 5 min)</th></tr>
+    <tr><td>1–3</td><td><code>…-errors</code> for FastAPI, live, fan-out</td><td>≥ 5 Lambda errors</td></tr>
+    <tr><td>4</td><td><code>…-ingest-errors</code></td><td>≥ 1 error (weekly job: any failure matters)</td></tr>
+    <tr><td>5</td><td><code>…-pdf-cleanup-errors</code></td><td>≥ 1 error</td></tr>
+    <tr><td>6</td><td><code>…-5xx</code> (HTTP API)</td><td>≥ 5 server-error responses</td></tr>
+    <tr><td>7</td><td><code>…-crashes</code></td><td>log "An error occurred running the application"</td></tr>
+    <tr><td>8</td><td><code>…-fanout-enqueue-errors</code></td><td>log "Forum broadcast could not be queued"</td></tr>
+    <tr><td>9</td><td><code>…-ingest-small-new-semester</code></td><td>log "SMALL_NEW_SEMESTER"</td></tr>
+  </table></div>
+  <p class="files">Files: <code>infra/terraform/api.tf</code> (alarms 1–3, 6–8) · <code>ingest.tf</code> (4, 9, SNS topic) · <code>forum_cleanup.tf</code> (5)</p>
+</section>
+
+<!-- ================= 7 ================= -->
+<section class="part" id="deploy">
+  <div class="partno">Part 7</div>
+  <h2>CI/CD and infrastructure</h2>
+  <p class="oneliner">Every PR is tested in Docker. Every merge to main produces a Terraform plan that a human approves.</p>
+
+  <h3>On every pull request: <code>ci.yml</code></h3>
+  <div class="pipeline">
+    <div class="pipe"><span class="n">job 1</span><b>Backend checks</b>Docker image runs lint, format check and pytest</div>
+    <div class="pipe"><span class="n">job 2</span><b>Frontend checks</b>ESLint, Prettier, TypeScript, Vitest, build</div>
+    <div class="pipe"><span class="n">job 3</span><b>Infra &amp; containers</b>cfn-lint, <code>terraform fmt/validate</code>, build images, <code>compose up</code>, <code>smoke_test.py</code></div>
+  </div>
+
+  <h3>On push to main: <code>terraform-deploy.yml</code></h3>
+  <div class="pipeline">
+    <div class="pipe"><span class="n">1</span><b>Package</b><code>package_ingest.py</code> and <code>package_api.py</code> build zips with Linux wheels</div>
+    <div class="pipe"><span class="n">2</span><b>Plan</b><code>terraform plan</code>, shown in the run summary</div>
+    <div class="pipe gate"><span class="n">3</span><b>Human approval</b>GitHub "dev" environment gate</div>
+    <div class="pipe"><span class="n">4</span><b>Apply</b>Updates Lambdas whose zip hash changed</div>
+    <div class="pipe"><span class="n">5</span><b>Seed data</b>Runs ingestion if there's no <code>current.json</code> yet</div>
+    <div class="pipe"><span class="n">6</span><b>Health check</b><code>GET /health</code> must say ok</div>
+    <div class="pipe"><span class="n">7</span><b>Frontend</b>Vite build with API/Cognito URLs, <code>s3 sync</code></div>
+  </div>
+  <ul>
+    <li><b>No AWS keys stored in GitHub.</b> Actions logs in with <b>OIDC</b>: GitHub issues a short-lived identity token, and AWS lets it take on a deployment role (<code>infra/terraform/github/</code>).</li>
+    <li>Only one deploy runs at a time (<code>concurrency: terraform-dev</code>). Terraform state lives in S3 with versioning and locking.</li>
+    <li>Backend and frontend are released from the same commit, because both sides implement the ready handshake.</li>
+  </ul>
+
+  <h3>Who owns which resource</h3>
+  <div class="tbl"><table>
+    <tr><th>Resource</th><th>Managed by</th></tr>
+    <tr><td>Website, CloudFront, Lambdas, API Gateways, schedules, alarms, SNS</td><td>Terraform (<code>infra/terraform</code>)</td></tr>
+    <tr><td>Profiles table</td><td>Terraform (with <code>prevent_destroy</code> and deletion protection)</td></tr>
+    <tr><td>Forum PDF bucket <code>lecturekaki-forum</code></td><td>Terraform, adopted from CloudFormation on 9 Nov 2026 with <code>Retain</code> + <code>import</code></td></tr>
+    <tr><td>Cognito user pool, client, pre-signup trigger</td><td>CloudFormation <code>lecture-kaki-auth-dev</code> (<code>infra/auth.yaml</code>)</td></tr>
+    <tr><td>Timetable and forum tables</td><td>CloudFormation stacks (Terraform only <i>reads</i> them)</td></tr>
+  </table></div>
+  <div class="box tip"><h4>Running it locally</h4><p><code>docker compose up --build -d --wait</code> → UI on <code>localhost:8080</code> (nginx), API on <code>localhost:8000/docs</code> (uvicorn, no Mangum). Containers run read-only with all Linux capabilities dropped. Lecture data comes from <code>backend/scripts/ingest_local.py</code>; login and the database need the shared dev settings in <code>.env.local</code>.</p></div>
+</section>
+
+<!-- ================= DATA ================= -->
+<section class="part" id="data">
+  <div class="partno">Reference</div>
+  <h2>Data model</h2>
+  <p class="oneliner">Three DynamoDB tables, all on-demand billing (<code>PAY_PER_REQUEST</code>), plus two S3 buckets.</p>
+  <h3>Forum table: one table, many record types</h3>
+  <p>The table has a generic partition key <code>PK</code> and sort key <code>SK</code>. Each record type uses a prefix, so one table holds everything, and one query on <code>PK = ROOM#x</code> can fetch a room's messages (<code>SK</code> begins with <code>MSG#</code>) or its connections (<code>SK</code> begins with <code>CONN#</code>). A <code>ttl</code> attribute lets DynamoDB delete old records for free.</p>
+  <div class="tbl"><table>
+    <tr><th>PK</th><th>SK</th><th>What</th><th>Lives until</th></tr>
+    <tr><td><code>ROOM#&lt;room&gt;</code></td><td><code>MSG#&lt;id&gt;</code></td><td>A message: author <code>sub</code>, text, optional attachment {key, version, size}</td><td>Room closes</td></tr>
+    <tr><td><code>UPLOAD#&lt;id&gt;</code></td><td><code>METADATA</code></td><td>A PDF upload in progress; becomes <code>claimed</code> when posted</td><td>10 min</td></tr>
+    <tr><td><code>PDFQUOTA#&lt;user&gt;#&lt;hour&gt;</code></td><td><code>METADATA</code></td><td>Upload counter (max 10/hour)</td><td>2 h</td></tr>
+    <tr><td><code>TICKET#&lt;hash&gt;</code></td><td><code>METADATA</code></td><td>One-time WebSocket ticket</td><td>30 s, or deleted on use</td></tr>
+    <tr><td><code>CONN#&lt;connectionId&gt;</code></td><td><code>METADATA</code></td><td>A socket, pending until ready</td><td>Token expiry or disconnect</td></tr>
+    <tr><td><code>ROOM#&lt;room&gt;</code></td><td><code>CONN#&lt;connectionId&gt;</code></td><td>"This socket is in this room" (added on ready)</td><td>Token expiry or disconnect</td></tr>
+  </table></div>
+  <h3>Other storage</h3>
+  <div class="tbl"><table>
+    <tr><th>Store</th><th>Key</th><th>Holds</th></tr>
+    <tr><td>Timetables table</td><td><code>user_id</code></td><td>Four-semester lesson selections</td></tr>
+    <tr><td>Profiles table</td><td><code>user_id</code></td><td>Ordered topic list, username</td></tr>
+    <tr><td>S3 web bucket</td><td>path</td><td>Built frontend + <code>lectures/</code> JSON</td></tr>
+    <tr><td>S3 forum PDFs</td><td><code>uploads/&lt;closing date&gt;/&lt;id&gt;.pdf</code></td><td>Versioned, encrypted, TLS-only, public access blocked</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= TA ================= -->
+<section class="part" id="ta">
+  <div class="partno">Rehearsal</div>
+  <h2>Questions a TA is likely to ask</h2>
+  <dl class="qa">
+    <dt>Why serverless instead of EC2 or containers?</dt>
+    <dd>Usage is spiky (around lecture times) and low most of the time. Lambda and on-demand DynamoDB cost nothing when idle and scale automatically, and there are no servers to patch. The project used to run on a Caddy server and moved to Lambda.</dd>
+    <dt>How does it scale?</dt>
+    <dd>Lambdas keep no state between requests, so AWS runs as many copies as needed. Sockets are held by API Gateway and room membership is in DynamoDB, so any Lambda copy can broadcast. Static content is served from CloudFront's cache. The limits are Lambda concurrency, API Gateway quotas, and fan-out work that grows with room size.</dd>
+    <dt>Why is lecture data static JSON and not an API?</dt>
+    <dd>It changes weekly and is identical for everyone. Pre-built files behind a CDN are the fastest and cheapest option and don't touch the backend at all. Search runs in the browser.</dd>
+    <dt>What is Mangum?</dt>
+    <dd>An adapter <i>inside</i> the FastAPI Lambda. It converts API Gateway's event into an ASGI request for FastAPI and converts the response back. The same app runs under uvicorn locally.</dd>
+    <dt>Why a ticket for the WebSocket?</dt>
+    <dd>Browsers can't set headers on <code>new WebSocket()</code>, and a JWT in a URL could be logged. A ticket is single-use, lasts 30 s, works for one room, and can only open a socket.</dd>
+    <dt>Why the ready handshake?</dt>
+    <dd><code>$connect</code> runs before the socket is fully open. Joining the room only after <code>ready</code> means a broadcast can't hit a half-open socket and wrongly remove a user.</dd>
+    <dt>Can a message be lost?</dt>
+    <dd>The <i>message</i> can't: it's saved before anything else. A live <i>notification</i> can be, rarely (a crash between saving and handing off). The client reloads history on every (re)connect, and a failed hand-off raises an alarm.</dd>
+    <dt>Why does the browser upload PDFs directly to S3?</dt>
+    <dd>It keeps large bodies out of Lambda and API Gateway (cheaper, no payload limits). The presigned URL is locked to one key, one size, one content type, 60 s, and no overwrite. The server still checks the file before it can be posted.</dd>
+    <dt>How is security handled?</dt>
+    <dd>NUS-only sign-up; PKCE login; offline JWT checks (RS256, issuer, client, <code>token_use</code>); ownership checks on delete; rooms closed by date on the server; single-use tickets; short presigned URLs; private S3 via OAC; least-privilege IAM role per Lambda; CORS restricted to our origins; OIDC deploys with no stored keys.</dd>
+    <dt>How do you know when something breaks?</dt>
+    <dd>9 CloudWatch alarms → SNS → email: Lambda errors, API 5xx, and three log-based checks.</dd>
+    <dt>Where is AI used?</dt>
+    <dd>Only in weekly ingestion: Bedrock Nova 2 Lite adds topics, checked against keywords and cached so unchanged modules aren't sent again.</dd>
+    <dt>What would you improve?</dt>
+    <dd>Make the academic calendar data-driven instead of hard-coded; move the remaining CloudFormation stacks into Terraform; add a custom domain; load-test fan-out for large rooms.</dd>
+  </dl>
+</section>
+
+</main>
+<footer><div class="wrap">Built from the <code>main</code> branch of CS5224-Lecture-Kaki (last merged PR #37). Read-only walk-through; nothing in the repo was changed.</div></footer>
+</body></html>
